@@ -1,4 +1,6 @@
+import java.rmi.server.UnicastRemoteObject;
 
-public class Gestionnaire {
+
+public class GestionStationsImpl extends UnicastRemoteObject implements GestionStation {
 
 }
