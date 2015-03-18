@@ -9,5 +9,6 @@ import java.util.Random;
 public interface GestionStation extends Remote {
 	
 	public int getClientMotDePasse() throws RemoteException;
+	public void creerStation(String string, double longitude, double latitude, int capacite) throws RemoteException;
 
 }

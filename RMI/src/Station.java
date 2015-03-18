@@ -8,14 +8,14 @@ import java.util.Vector;
 
 
 public class Station implements Remote {
-	private int numS;
+	private String numS;
 	private double longitude;
 	private double latitude;
 	private int capacite;
 	private int nbPlaceLibre;
 	private Vector<Velo> lesVelos;
 	
-	public Station(int numS, double longitude, double latitude, int capacite){
+	public Station(String numS, double longitude, double latitude, int capacite){
 		this.numS=numS;
 		this.longitude=longitude;
 		this.latitude=latitude;
@@ -38,14 +38,15 @@ public class Station implements Remote {
 	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
-		Station station = new Station(1, 0.6, 0.13, 14);
-		Velo velo = station.rechercherVeloLibre();
+		proxy.creerStation("3", 0.5, 0.9, 12);
+		/*Velo velo = station.rechercherVeloLibre();
 		if(velo!=null){
 			System.out.println("Vous pouvez prendre le vélo "+ velo.getNumV());
 		}
 		else{
 			//proxy.getVeloLibre();
 		}
+		*/
 		//proxy.getClientMotDePasse();
 	}
 }

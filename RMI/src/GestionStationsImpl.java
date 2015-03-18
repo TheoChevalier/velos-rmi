@@ -59,13 +59,13 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 	}
 	
-	public void creerStation(int numS, double longitude, double latitude, int capacite) throws RemoteException{
+	public void creerStation(String numS, double longitude, double latitude, int capacite) throws RemoteException{
 		try{
 			Statement s = conn.createStatement();
-			//s.executeUpdate("insert into STATIONS values ('"+ +"', 0.6, 0.3, 10)");
+			s.executeUpdate("insert into STATIONS values ('"+ numS +"', "+longitude+", "+latitude+", "+capacite+")");
 		}
 		catch(SQLException e){
-			
+			e.printStackTrace();
 		}
 	}
 
