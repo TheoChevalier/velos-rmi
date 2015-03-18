@@ -3,11 +3,14 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
 
 public class Station implements Remote {
+	private HashMap<String, Station> listeStations = new HashMap<String, Station>();
+	
 	private String numS;
 	private double longitude;
 	private double latitude;
@@ -21,6 +24,7 @@ public class Station implements Remote {
 		this.latitude=latitude;
 		this.capacite=capacite;
 		lesVelos = new Vector<Velo>();
+		listeStations.put(numS, this);
 	}
 	
 	public Velo rechercherVeloLibre(){

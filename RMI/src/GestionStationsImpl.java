@@ -113,7 +113,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 			
 	        while (rs.next()) {
 	        	String num = rs.getString("numS");
-	        	System.out.println("Vélo " + num);
+	        	System.out.println("Station " + num);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
