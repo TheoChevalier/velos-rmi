@@ -1,8 +1,13 @@
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.Vector;
 
 
-public class Station {
+public class Station implements Remote {
 	private int numS;
 	private double longitude;
 	private double latitude;
@@ -29,5 +34,18 @@ public class Station {
 			}
 		}
 		return v;
+	}
+	
+	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
+		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
+		Station station = new Station(1, 0.6, 0.13, 14);
+		Velo velo = station.rechercherVeloLibre();
+		if(velo!=null){
+			System.out.println("Vous pouvez prendre le vélo "+ velo.getNumV());
+		}
+		else{
+			//proxy.getVeloLibre();
+		}
+		//proxy.getClientMotDePasse();
 	}
 }
