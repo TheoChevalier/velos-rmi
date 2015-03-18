@@ -36,6 +36,8 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	s.executeUpdate("insert into CLIENTS values ('5', 'Léa', '000000001')");
 	        	s.executeUpdate("insert into CLIENTS values ('6', 'Paul', '000000002')");
 	        }
+	        
+	        
 		} catch(Exception e) {
 			// il y a eu une erreur
 			e.printStackTrace();
