@@ -1,16 +1,13 @@
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Random;
 
 
-public interface GestionStation {
-	void GestionStationsImpl() throws RemoteException;
-
-	public void main(String[] args) throws RemoteException, MalformedURLException;
+public interface GestionStation extends Remote {
 	
-	public int getClientMotDePasse();
+	public int getClientMotDePasse() throws RemoteException;
 
-	void log(String aMessage);
 }
