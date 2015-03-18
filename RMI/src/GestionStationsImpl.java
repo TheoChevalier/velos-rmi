@@ -22,20 +22,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		    // on cree un objet Statement qui va permettre l'execution des requetes
 	        Statement s = conn.createStatement();
 	
-	        String query = "select numV from VELOS limit 1";
-	        try {
-	        	s.executeQuery(query);
-	        } catch(Exception e) {
-	        	s.execute("create table VELOS  ( " +
-	        			" numV VARCHAR( 256 ) NOT NULL PRIMARY KEY, " +
-	        			" etat VARCHAR( 30 ), " +
-	        			" station VARCHAR( 256 ))");
-	        	s.executeUpdate("insert into VELOS values ('1', 'Libre', '1')");
-	        	s.executeUpdate("insert into VELOS values ('2', 'Libre', '2')");
-	        	s.executeUpdate("insert into VELOS values ('3', 'Emprunte', '1')");
-	        	s.executeUpdate("insert into VELOS values ('4', 'Maintenance', '1')");
-	        }
-	        query = "select numC from CLIENTS limit 1";
+	        String query = "select numC from CLIENTS limit 1";
 	        try {
 	        	s.executeQuery(query);
 	        } catch(Exception e) {
@@ -49,21 +36,31 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	s.executeUpdate("insert into CLIENTS values ('6', 'Paul', '000000002')");
 	        }
 	        
-	        // On regarde si la table existe deja
 	       query = "select numS from STATIONS limit 1";
 	        try {
 	        	s.executeQuery(query);
 	        } catch(Exception e) {
-	        	// sinon on l'a cree
 	        	s.execute("create table STATIONS  ( " +
 	        			" numS VARCHAR( 256 ) NOT NULL PRIMARY KEY, " +
 	        			" longitude NUMERIC , " +
 	        			" latitude NUMERIC , " +
 	        			" capacite INTEGER)");
 	        	
-	        	// on ajoute des entrees de test
 	        	s.executeUpdate("insert into STATIONS values ('1', 0.6, 0.3, 10)");
 	        	s.executeUpdate("insert into STATIONS values ('2', 0.8, 0.9, 15)");
+	        }
+	        query = "select numV from VELOS limit 1";
+	        try {
+	        	s.executeQuery(query);
+	        } catch(Exception e) {
+	        	s.execute("create table VELOS  ( " +
+	        			" numV VARCHAR( 256 ) NOT NULL PRIMARY KEY, " +
+	        			" etat VARCHAR( 30 ), " +
+	        			" station VARCHAR( 256 ))");
+	        	s.executeUpdate("insert into VELOS values ('1', 'Libre', '1')");
+	        	s.executeUpdate("insert into VELOS values ('2', 'Libre', '2')");
+	        	s.executeUpdate("insert into VELOS values ('3', 'Emprunte', '1')");
+	        	s.executeUpdate("insert into VELOS values ('4', 'Maintenance', '1')");
 	        }
 		} catch(Exception e) {
 			// il y a eu une erreur
@@ -116,7 +113,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 			
 	        while (rs.next()) {
 	        	String num = rs.getString("numS");
-	        	System.out.println(num);
+	        	System.out.println("Vélo " + num);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
