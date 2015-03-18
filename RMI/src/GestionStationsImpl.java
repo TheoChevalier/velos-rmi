@@ -50,20 +50,21 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	s.executeUpdate("insert into STATIONS values ('2', 0.8, 0.9, 15)");
 	        }
 	        query = "select numV from VELOS limit 1";
-	        try {
+	        /*try {
 	        	s.executeQuery(query);
-	        } catch(Exception e) {
+	        } catch(Exception e) {*/
+	        	s.execute("DROP TABLE VELOS");
 	        	s.execute("create table VELOS  ( " +
 	        			" numV VARCHAR( 256 ) NOT NULL PRIMARY KEY, " +
-	        			" etat VARCHAR( 30 ), " +
+	        			" maintenance BOOLEAN, " +
+	        			" client VARCHAR( 256 ), " +
 	        			" station VARCHAR( 256 ))");
-	        	s.executeUpdate("insert into VELOS values ('1', 'Libre', '1')");
-	        	s.executeUpdate("insert into VELOS values ('2', 'Libre', '2')");
-	        	s.executeUpdate("insert into VELOS values ('3', 'Emprunte', '1')");
-	        	s.executeUpdate("insert into VELOS values ('4', 'Maintenance', '1')");
-	        }
+	        	s.executeUpdate("insert into VELOS values ('1', false, null, '1')");
+	        	s.executeUpdate("insert into VELOS values ('2', false, null, '2')");
+	        	s.executeUpdate("insert into VELOS values ('3', false, '1', '1')");
+	        	s.executeUpdate("insert into VELOS values ('4', true, null, '1')");
+	        //}
 		} catch(Exception e) {
-			// il y a eu une erreur
 			e.printStackTrace();
 		}
 	}
@@ -87,11 +88,11 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 
 		try {
 			Statement s = conn.createStatement();
-			ResultSet rs = s.executeQuery("select numV, etat from VELOS");
+			ResultSet rs = s.executeQuery("select * from VELOS");
 	        while (rs.next()) {
 	        	String nom = rs.getString("numV");
-	        	String etat = rs.getString("etat");
-	        	System.out.println(nom + ", etat : " + etat);
+	        	String client = rs.getString("client");
+	        	System.out.println(nom + ", Client : " + client);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
