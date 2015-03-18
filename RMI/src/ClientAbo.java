@@ -10,5 +10,4 @@ public class ClientAbo implements java.rmi.Remote {
 		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
 		proxy.getClientMotDePasse();
 	}
-
 }

@@ -25,7 +25,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	
 	public int getClientMotDePasse() {
         Random randomGenerator = new Random();
-		int randomInt = randomGenerator.nextInt(100);
+		int randomInt = randomGenerator.nextInt(100000000);
 		System.out.println("Generated : " + randomInt);
 		return randomInt;
 	}
