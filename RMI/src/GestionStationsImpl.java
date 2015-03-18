@@ -73,6 +73,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		try{
 			Statement s = conn.createStatement();
 			s.executeUpdate("insert into STATIONS values ('"+ numS +"', "+longitude+", "+latitude+", "+capacite+")");
+			Station station = new Station(numS, longitude, latitude, capacite);
 		}
 		catch(SQLException e){
 			e.printStackTrace();

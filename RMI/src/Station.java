@@ -9,8 +9,8 @@ import java.util.Vector;
 
 
 public class Station implements Remote {
-	private HashMap<String, Station> listeStations = new HashMap<String, Station>();
-	
+	private static HashMap<String, Station> listeStations = new HashMap<String, Station>();
+
 	private String numS;
 	private double longitude;
 	private double latitude;
