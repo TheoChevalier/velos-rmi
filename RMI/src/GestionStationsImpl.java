@@ -22,8 +22,20 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		    // on cree un objet Statement qui va permettre l'execution des requetes
 	        Statement s = conn.createStatement();
 	
-	        // On regarde si la table existe deja
-	        String query = "select numC from CLIENTS limit 1";
+	        String query = "select numV from VELOS limit 1";
+	        try {
+	        	s.executeQuery(query);
+	        } catch(Exception e) {
+	        	s.execute("create table VELOS  ( " +
+	        			" numV VARCHAR( 256 ) NOT NULL PRIMARY KEY, " +
+	        			" etat VARCHAR( 30 ), " +
+	        			" station VARCHAR( 256 ))");
+	        	s.executeUpdate("insert into VELOS values ('1', 'Libre', '1')");
+	        	s.executeUpdate("insert into VELOS values ('2', 'Libre', '2')");
+	        	s.executeUpdate("insert into VELOS values ('3', 'Emprunte', '1')");
+	        	s.executeUpdate("insert into VELOS values ('4', 'Maintenance', '1')");
+	        }
+	        query = "select numC from CLIENTS limit 1";
 	        try {
 	        	s.executeQuery(query);
 	        } catch(Exception e) {
@@ -49,7 +61,18 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		GestionStationsImpl gest = new GestionStationsImpl("ServiceVelos");
 		Naming.rebind("Gestionnaire", gest);
 		System.out.println("Running on port 1099");
-		
+
+		try {
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select numV, etat from VELOS");
+	        while (rs.next()) {
+	        	String nom = rs.getString("numV");
+	        	String etat = rs.getString("etat");
+	        	System.out.println(nom + ", etat : " + etat);
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		try {
 			Statement s = conn.createStatement();
 			ResultSet rs = s.executeQuery("select nomC from CLIENTS where numC = '5'");
