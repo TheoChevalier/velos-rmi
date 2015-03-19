@@ -90,7 +90,57 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 			e.printStackTrace();
 		}
 	}
+	
+	public void affecterVeloStation(String numVelo, String numStation) throws RemoteException{
+		if(rechercherStation(numStation) && rechercherVelo(numVelo)){
+			try{
+				Station station = Station.getListeStations().get(numStation);
+				Velo velo = Velo.getListeVelos().get(numVelo);
+				Statement s = conn.createStatement();
+				s.executeUpdate("update VELOS set station='"+ numStation +"' WHERE numV='"+numVelo+"'");
+				Station.getListeStations().get(numStation).getLesVelos().add(velo);
+				Velo.getListeVelos().get(numVelo).setStation(station);
+			}
+			catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+	}
 
+	public boolean rechercherVelo(String numVelo) throws RemoteException{
+		try{
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select * from VELOS where numV = '"+numVelo+"'");
+	        if (rs.next()) {
+	        	return true;
+	        }
+	        else{
+	        	return false;
+	        }
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean rechercherStation(String numStation) throws RemoteException{
+		try{
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select * from STATIONS where numS = '"+numStation+"'");
+	        if (rs.next()) {
+	        	return true;
+	        }
+	        else{
+	        	return false;
+	        }
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		System.out.println("coucou2");
 		LocateRegistry.createRegistry(1099);
