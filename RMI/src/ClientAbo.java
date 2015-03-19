@@ -15,6 +15,6 @@ public class ClientAbo implements java.rmi.Remote {
 	      nom = in.nextLine();
 	      in.close();
 		  String[] retour = proxy.creerClient(nom);
-		  System.out.println("Identifiant : " + retour[0] + ", mot de passe : " + retour[1]);
+		  System.out.println(nom + ", votre identifiant est : " + retour[0] + "\nVotre mot de passe est : " + retour[1] + "\n");
 	}
 }
