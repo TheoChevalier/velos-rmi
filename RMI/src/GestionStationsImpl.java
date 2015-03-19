@@ -28,14 +28,15 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	s.executeQuery(query);
 	        } catch(Exception e) {
 	        	// sinon on l'a cree
+	        	s.execute("DROP TABLE CLIENTS");
 	        	s.execute("create table CLIENTS  ( " +
 	        			" numC bigint auto_increment NOT NULL PRIMARY KEY, " +
 	        			" nomC VARCHAR( 256 ) , " +
 	        			" mdpC VARCHAR( 10 ))");
 	        	// on ajoute des entrees de test
-	        	s.executeUpdate("insert into CLIENTS values ('', 'Léa', '000000001')");
-	        	s.executeUpdate("insert into CLIENTS values ('', 'Paul', '000000002')");
-	        }
+	        	s.executeUpdate("insert into CLIENTS (nomC, mdpC) values ('Léa', '000000001')");
+	        	s.executeUpdate("insert into CLIENTS (nomC, mdpC) values ('Paul', '000000002')");
+	       }
 	        
 	       query = "select numS from STATIONS limit 1";
 	        try {
@@ -94,6 +95,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 			e.printStackTrace();
 		}
 	}
+
 	
 	public void affecterVeloStation(String numVelo, String numStation) throws RemoteException{
 		if(rechercherStation(numStation) && rechercherVelo(numVelo)){
@@ -157,7 +159,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	String nom = rs.getString("numV");
 	        	String client = rs.getString("client");
 	        	String station = rs.getString("station");
-	        	System.out.println("V�lo " + nom + ", Client : " + client + " dans la station "+station);
+	        	System.out.println("V�lo " + nom + ", Client : " + client + " dans la station "+station);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -196,20 +198,16 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		
 		// INSERT + récupération du dernier ID autoincrémenté inséré
 		try {
-			String sql = "INSERT INTO CLIENTS values ('', ?, ?) ('', '" + nom + "', '" + randomInt +"')";
+			String sql = "INSERT INTO CLIENTS (nomC, mdpC) values ('" + nom + "', '" + randomInt +"')";
 
-			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			ps.setString(2, nom);
-			ps.setString(3, Integer.toString(randomInt));
-			ps.executeUpdate();
-			ResultSet generatedKeys = ps.getGeneratedKeys();
-			if (generatedKeys.next()) {
-			    long id = generatedKeys.getLong(1);
-			    retour[0] = Long.toString(id);
-			} else {
-			    // Throw exception?
-			}
-			conn.commit();
+			Statement s = conn.createStatement();
+			s.executeUpdate(sql);
+			sql = "SELECT MAX(numC) FROM CLIENTS";
+			ResultSet rs = s.executeQuery(sql);
+	        while (rs.next()) {
+	        	retour[0] = rs.getString("MAX(numC)");
+	        	System.out.println("Last ID : " + retour[0]);
+	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -217,6 +215,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		
 		return retour;
 	}
+
 
 
 
