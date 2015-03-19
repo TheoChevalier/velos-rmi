@@ -69,6 +69,17 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 	}
 	
+	public void creerVelo(String numV, boolean maintenance) throws RemoteException{
+		try{
+			Statement s = conn.createStatement();
+			s.executeUpdate("insert into VELOS values ('"+numV+"', "+maintenance+", null, null)");
+			Velo velo = new Velo(numV, maintenance);
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public void creerStation(String numS, double longitude, double latitude, int capacite) throws RemoteException{
 		try{
 			Statement s = conn.createStatement();

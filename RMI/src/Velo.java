@@ -1,22 +1,29 @@
+import java.util.HashMap;
+
 
 public class Velo {
+	private static HashMap<String, Velo> listeVelos = new HashMap<String, Velo>();
+
 	enum Etat{
 		Emprunte, Libre, Maintenance
 	}
 	
-	private int numV;
+	private String numV;
 	private Etat etat;
 	
-	public Velo(int numV){
+	public Velo(String numV, boolean maintenance){
 		this.numV=numV;
-		this.etat= Etat.Libre;
+		if(maintenance){
+			this.etat= Etat.Maintenance;
+		}
+		listeVelos.put(numV, this);
 	}
 
-	public int getNumV() {
+	public String getNumV() {
 		return numV;
 	}
 
-	public void setNumV(int numV) {
+	public void setNumV(String numV) {
 		this.numV = numV;
 	}
 
