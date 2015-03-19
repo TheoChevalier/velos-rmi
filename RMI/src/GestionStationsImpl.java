@@ -51,9 +51,9 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	s.executeUpdate("insert into STATIONS values ('2', 0.8, 0.9, 15)");
 	        }
 	        query = "select numV from VELOS limit 1";
-	        /*try {
+	        try {
 	        	s.executeQuery(query);
-	        } catch(Exception e) {*/
+	        } catch(Exception e) {
 	        	s.execute("DROP TABLE VELOS");
 	        	s.execute("create table VELOS  ( " +
 	        			" numV VARCHAR( 256 ) NOT NULL PRIMARY KEY, " +
@@ -64,7 +64,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	s.executeUpdate("insert into VELOS values ('2', false, null, '2')");
 	        	s.executeUpdate("insert into VELOS values ('3', false, '1', '1')");
 	        	s.executeUpdate("insert into VELOS values ('4', true, null, '1')");
-	        //}
+	        }
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -72,8 +72,11 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	
 	public void creerVelo(String numV, boolean maintenance) throws RemoteException{
 		try{
+			int n;
 			Statement s = conn.createStatement();
-			s.executeUpdate("insert into VELOS values ('"+numV+"', "+maintenance+", null, null)");
+			n=s.executeUpdate("insert into VELOS values ('"+numV+"', "+maintenance+", null, null)");
+			System.out.println(n);
+			System.out.println("insert into VELOS values ('"+numV+"', "+maintenance+", null, null)");
 			Velo velo = new Velo(numV, maintenance);
 		}
 		catch(SQLException e){
@@ -99,8 +102,6 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 				Velo velo = Velo.getListeVelos().get(numVelo);
 				Statement s = conn.createStatement();
 				s.executeUpdate("update VELOS set station='"+ numStation +"' WHERE numV='"+numVelo+"'");
-				Station.getListeStations().get(numStation).getLesVelos().add(velo);
-				Velo.getListeVelos().get(numVelo).setStation(station);
 			}
 			catch(SQLException e){
 				e.printStackTrace();
@@ -155,7 +156,8 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        while (rs.next()) {
 	        	String nom = rs.getString("numV");
 	        	String client = rs.getString("client");
-	        	System.out.println(nom + ", Client : " + client);
+	        	String station = rs.getString("station");
+	        	System.out.println("Vélo " + nom + ", Client : " + client + " dans la station "+station);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
