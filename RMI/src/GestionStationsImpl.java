@@ -6,6 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,12 +29,12 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        } catch(Exception e) {
 	        	// sinon on l'a cree
 	        	s.execute("create table CLIENTS  ( " +
-	        			" numC VARCHAR( 256 ) NOT NULL PRIMARY KEY, " +
+	        			" numC bigint auto_increment NOT NULL PRIMARY KEY, " +
 	        			" nomC VARCHAR( 256 ) , " +
 	        			" mdpC VARCHAR( 10 ))");
 	        	// on ajoute des entrees de test
-	        	s.executeUpdate("insert into CLIENTS values ('5', 'Léa', '000000001')");
-	        	s.executeUpdate("insert into CLIENTS values ('6', 'Paul', '000000002')");
+	        	s.executeUpdate("insert into CLIENTS values ('', 'Léa', '000000001')");
+	        	s.executeUpdate("insert into CLIENTS values ('', 'Paul', '000000002')");
 	        }
 	        
 	       query = "select numS from STATIONS limit 1";
@@ -111,10 +112,10 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 		try {
 			Statement s = conn.createStatement();
-			ResultSet rs = s.executeQuery("select nomC from CLIENTS where numC = '5'");
-	        if (rs.next()) {
+			ResultSet rs = s.executeQuery("select nomC from CLIENTS");
+	        while (rs.next()) {
 	        	String nom = rs.getString("nomC");
-	        	System.out.println(nom);
+	        	System.out.println("Client : " + nom);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -133,11 +134,36 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 	}
 	
-	public int getClientMotDePasse() {
+	public String[] creerClient(String nom) {
+		String[] retour = new String[2];
+		retour[0] = "Aucun";
         Random randomGenerator = new Random();
 		int randomInt = randomGenerator.nextInt(100000000);
 		System.out.println("Generated : " + randomInt);
-		return randomInt;
+		retour[1] = Integer.toString(randomInt);
+		
+		// INSERT + récupération du dernier ID autoincrémenté inséré
+		try {
+			String sql = "INSERT INTO CLIENTS values ('', ?, ?) ('', '" + nom + "', '" + randomInt +"')";
+
+			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ps.setString(2, nom);
+			ps.setString(3, Integer.toString(randomInt));
+			ps.executeUpdate();
+			ResultSet generatedKeys = ps.getGeneratedKeys();
+			if (generatedKeys.next()) {
+			    long id = generatedKeys.getLong(1);
+			    retour[0] = Long.toString(id);
+			} else {
+			    // Throw exception?
+			}
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return retour;
 	}
 
 
