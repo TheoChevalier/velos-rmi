@@ -11,6 +11,14 @@ import java.util.Vector;
 public class Station implements Remote {
 	private static HashMap<String, Station> listeStations = new HashMap<String, Station>();
 
+	public static HashMap<String, Station> getListeStations() {
+		return listeStations;
+	}
+
+	public static void setListeStations(HashMap<String, Station> listeStations) {
+		Station.listeStations = listeStations;
+	}
+
 	private String numS;
 	private double longitude;
 	private double latitude;
@@ -27,6 +35,54 @@ public class Station implements Remote {
 		listeStations.put(numS, this);
 	}
 	
+	public String getNumS() {
+		return numS;
+	}
+
+	public void setNumS(String numS) {
+		this.numS = numS;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public int getCapacite() {
+		return capacite;
+	}
+
+	public void setCapacite(int capacite) {
+		this.capacite = capacite;
+	}
+
+	public int getNbPlaceLibre() {
+		return nbPlaceLibre;
+	}
+
+	public void setNbPlaceLibre(int nbPlaceLibre) {
+		this.nbPlaceLibre = nbPlaceLibre;
+	}
+
+	public Vector<Velo> getLesVelos() {
+		return lesVelos;
+	}
+
+	public void setLesVelos(Vector<Velo> lesVelos) {
+		this.lesVelos = lesVelos;
+	}
+
 	public Velo rechercherVeloLibre(){
 		Velo v = null;
 		boolean trouve=false;
