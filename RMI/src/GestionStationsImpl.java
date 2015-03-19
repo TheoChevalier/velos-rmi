@@ -28,14 +28,15 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	s.executeQuery(query);
 	        } catch(Exception e) {
 	        	// sinon on l'a cree
+	        	s.execute("DROP TABLE CLIENTS");
 	        	s.execute("create table CLIENTS  ( " +
 	        			" numC bigint auto_increment NOT NULL PRIMARY KEY, " +
 	        			" nomC VARCHAR( 256 ) , " +
 	        			" mdpC VARCHAR( 10 ))");
 	        	// on ajoute des entrees de test
-	        	s.executeUpdate("insert into CLIENTS values ('', 'Léa', '000000001')");
-	        	s.executeUpdate("insert into CLIENTS values ('', 'Paul', '000000002')");
-	        }
+	        	s.executeUpdate("insert into CLIENTS (nomC, mdpC) values ('Léa', '000000001')");
+	        	s.executeUpdate("insert into CLIENTS (nomC, mdpC) values ('Paul', '000000002')");
+	       }
 	        
 	       query = "select numS from STATIONS limit 1";
 	        try {
@@ -91,57 +92,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 			e.printStackTrace();
 		}
 	}
-	
-	public void affecterVeloStation(String numVelo, String numStation) throws RemoteException{
-		if(rechercherStation(numStation) && rechercherVelo(numVelo)){
-			try{
-				Station station = Station.getListeStations().get(numStation);
-				Velo velo = Velo.getListeVelos().get(numVelo);
-				Statement s = conn.createStatement();
-				s.executeUpdate("update VELOS set station='"+ numStation +"' WHERE numV='"+numVelo+"'");
-				Station.getListeStations().get(numStation).getLesVelos().add(velo);
-				Velo.getListeVelos().get(numVelo).setStation(station);
-			}
-			catch(SQLException e){
-				e.printStackTrace();
-			}
-		}
-	}
 
-	public boolean rechercherVelo(String numVelo) throws RemoteException{
-		try{
-			Statement s = conn.createStatement();
-			ResultSet rs = s.executeQuery("select * from VELOS where numV = '"+numVelo+"'");
-	        if (rs.next()) {
-	        	return true;
-	        }
-	        else{
-	        	return false;
-	        }
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	public boolean rechercherStation(String numStation) throws RemoteException{
-		try{
-			Statement s = conn.createStatement();
-			ResultSet rs = s.executeQuery("select * from STATIONS where numS = '"+numStation+"'");
-	        if (rs.next()) {
-	        	return true;
-	        }
-	        else{
-	        	return false;
-	        }
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		System.out.println("coucou2");
 		LocateRegistry.createRegistry(1099);
@@ -194,26 +145,41 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		
 		// INSERT + récupération du dernier ID autoincrémenté inséré
 		try {
-			String sql = "INSERT INTO CLIENTS values ('', ?, ?) ('', '" + nom + "', '" + randomInt +"')";
+			String sql = "INSERT INTO CLIENTS (nomC, mdpC) values ('" + nom + "', '" + randomInt +"')";
 
-			PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			ps.setString(2, nom);
-			ps.setString(3, Integer.toString(randomInt));
-			ps.executeUpdate();
-			ResultSet generatedKeys = ps.getGeneratedKeys();
-			if (generatedKeys.next()) {
-			    long id = generatedKeys.getLong(1);
-			    retour[0] = Long.toString(id);
-			} else {
-			    // Throw exception?
-			}
-			conn.commit();
+			Statement s = conn.createStatement();
+			s.executeUpdate(sql);
+			sql = "SELECT MAX(numC) FROM CLIENTS";
+			ResultSet rs = s.executeQuery(sql);
+	        while (rs.next()) {
+	        	retour[0] = rs.getString("MAX(numC)");
+	        	System.out.println("Last ID : " + retour[0]);
+	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		
 		return retour;
+	}
+
+	@Override
+	public void affecterVeloStation(String numVelo, String numStation)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean rechercherVelo(String numVelo) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean rechercherStation(String numStation) throws RemoteException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
