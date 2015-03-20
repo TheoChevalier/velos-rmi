@@ -145,6 +145,49 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		return false;
 	}
 	
+	public Vector majCacheStation(String numStation) throws RemoteException{
+		try{
+			Velo velo;
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select numV, maintenance, station, client from VELOS where station = '"+numStation+"'");
+	        if (rs.next()) {
+	        	String numV = rs.getString("numV");
+	        	boolean maintenance = rs.getBoolean("maintenance");
+	        	String numC = rs.getString("client");
+	        	Client client = rechercherClient(numC);
+	        	velo = new Velo(numV, maintenance, client);
+	        }
+	        else{
+	        	return null;
+	        }
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Client rechercherClient(String numClient) throws RemoteException{
+		try{
+			Client client;
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select * from CLIENTS where numC = '"+numClient+"'");
+	        if (rs.next()) {
+	        	String numC = rs.getString("numC");
+	        	String nomC = rs.getString("nomC");
+	        	String mdpC = rs.getString("mdpC");
+	        	client = new Client(numC, nomC, mdpC);
+	        }
+	        else{
+	        	return null;
+	        }
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		System.out.println("coucou2");
 		LocateRegistry.createRegistry(1099);
