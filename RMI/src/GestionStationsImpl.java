@@ -234,10 +234,12 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 		try {
 			Statement s = conn.createStatement();
-			ResultSet rs = s.executeQuery("select nomC from CLIENTS");
+			ResultSet rs = s.executeQuery("select * from CLIENTS");
 	        while (rs.next()) {
 	        	String nom = rs.getString("nomC");
-	        	System.out.println("Client : " + nom);
+	        	String numC = rs.getString("numC");
+	        	String mdp = rs.getString("mdpC");
+	        	System.out.println("Client : " + nom + " numéro : " + numC + " mdp : " + mdp);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();

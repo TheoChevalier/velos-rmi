@@ -90,7 +90,7 @@ public class Station implements Remote {
 		Iterator it = lesVelos.iterator();
 		while(it.hasNext() && !trouve){
 			v=(Velo)it.next();
-			if(v.getEtat().toString().equals("Libre")){
+			if(v.getClient()==null && !v.getEtat().toString().equals("Maintenance")){
 				trouve=true;
 			}
 		}
@@ -104,14 +104,8 @@ public class Station implements Remote {
 		for (Velo velo : station.lesVelos) {
 			System.out.println("Velo numero : " + velo.getNumV());
 		}
-		//Velo velo = station.rechercherVeloLibre();
-		/*if(velo!=null){
-			System.out.println("Vous pouvez prendre le v�lo "+ velo.getNumV());
-		}
-		else{
-			//proxy.getVeloLibre();
-		}
-		*/
+		
+		
 		//proxy.getClientMotDePasse();
 		
 		  Scanner in = new Scanner(System.in);
@@ -127,6 +121,11 @@ public class Station implements Remote {
 		  }
 		  System.out.println("Vous êtes connecté.");
 		  in.close();
+		  
+		  Velo velo = station.rechercherVeloLibre();
+			if(velo!=null){
+				System.out.println("Vous pouvez prendre le vélo "+ velo.getNumV());
+			}
 	      
 	}
 }

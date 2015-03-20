@@ -34,6 +34,8 @@ public class Velo implements Serializable{
 		this.numV = numV;
 		if(maintenance){
 			this.etat = Etat.Maintenance;
+		}else{
+			this.etat = Etat.Libre;
 		}
 		client = null;
 		listeVelos.put(numV, this);
@@ -42,6 +44,11 @@ public class Velo implements Serializable{
 	public Velo(String numV, boolean maintenance, Client client) {
 		this(numV, maintenance);
 		this.client = client;
+		if(client==null){
+			this.etat=Etat.Libre;
+		}else{
+			this.etat=Etat.Emprunte;
+		}
 	}
 
 	public String getNumV() {
