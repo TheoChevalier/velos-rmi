@@ -5,6 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Vector;
 
 
@@ -105,12 +106,27 @@ public class Station implements Remote {
 		}
 		//Velo velo = station.rechercherVeloLibre();
 		/*if(velo!=null){
-			System.out.println("Vous pouvez prendre le v�lo "+ velo.getNumV());
+			System.out.println("Vous pouvez prendre le v�lo "+ velo.getNumV());
 		}
 		else{
 			//proxy.getVeloLibre();
 		}
 		*/
 		//proxy.getClientMotDePasse();
+		
+		  Scanner in = new Scanner(System.in);
+		  System.out.println("Veuillez saisir votre identifiant :");
+		  String id = in.nextLine();
+		  System.out.println("Veuillez saisir votre mot de passe :");
+		  String mdp = in.nextLine();
+		  while (! proxy.authentificationClient(id, mdp)) {
+		      System.out.println("Échec de l’authentification.\nVeuillez saisir votre identifiant :");
+		  id = in.nextLine();
+		  System.out.println("Veuillez saisir votre mot de passe :");
+		      mdp = in.nextLine();
+		  }
+		  System.out.println("Vous êtes connecté.");
+		  in.close();
+	      
 	}
 }

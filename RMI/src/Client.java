@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Client {
+
+public class Client  implements Serializable{
 	private String numC;
 	private String nomC;
 	private String mdpC;
