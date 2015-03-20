@@ -18,23 +18,28 @@ public class Velo {
 	
 	private String numV;
 	private Etat etat;
-	private Station station;
+	private Client client;
 	
-	public Station getStation() {
-		return station;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setStation(Station station) {
-		this.station = station;
+	public void setStation(Client client) {
+		this.client = client;
 	}
 
-	public Velo(String numV, boolean maintenance){
-		this.numV=numV;
+	public Velo(String numV, boolean maintenance) {
+		this.numV = numV;
 		if(maintenance){
-			this.etat= Etat.Maintenance;
+			this.etat = Etat.Maintenance;
 		}
-		station=null;
+		client = null;
 		listeVelos.put(numV, this);
+	}
+	
+	public Velo(String numV, boolean maintenance, Client client) {
+		this(numV, maintenance);
+		this.client = client;
 	}
 
 	public String getNumV() {
