@@ -17,4 +17,5 @@ public interface GestionStation extends Remote {
 	public Station rechercherStation(String numStation) throws RemoteException;
 	public Vector majCacheStation(String numStation) throws RemoteException;
 	public Client rechercherClient(String numClient) throws RemoteException;
+	public boolean authentificationClient(String numClient, String mdpClient) throws RemoteException;
 }

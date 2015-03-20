@@ -195,6 +195,24 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		return null;
 	}
 	
+	public boolean authentificationClient(String numClient, String mdpClient) throws RemoteException{
+		try{
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select * from CLIENTS where numC = '"+numClient+"' AND mdpC='"+mdpClient+"'");
+	        if (rs.next()) {
+	        	return true;
+	        }
+	        else{
+	        	return false;
+	        }
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		System.out.println("coucou2");
 		LocateRegistry.createRegistry(1099);
