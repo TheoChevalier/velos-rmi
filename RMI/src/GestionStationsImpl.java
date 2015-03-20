@@ -98,7 +98,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 
 	
 	public void affecterVeloStation(String numVelo, String numStation) throws RemoteException{
-		if(rechercherStation(numStation) && rechercherVelo(numVelo)){
+		if(rechercherStation(numStation) != null && rechercherVelo(numVelo) != null){
 			try{
 				Station station = Station.getListeStations().get(numStation);
 				Velo velo = Velo.getListeVelos().get(numVelo);
@@ -111,21 +111,25 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 	}
 
-	public boolean rechercherVelo(String numVelo) throws RemoteException{
+	public Velo rechercherVelo(String numVelo) throws RemoteException {
 		try{
 			Statement s = conn.createStatement();
 			ResultSet rs = s.executeQuery("select * from VELOS where numV = '"+numVelo+"'");
 	        if (rs.next()) {
-	        	return true;
+	        	String numV = rs.getString("numV");
+	        	boolean maintenance = rs.getBoolean("maintenance");
+	        	String numC = rs.getString("client");
+	        	Client client = rechercherClient(numC);
+	        	return new Velo(numV, maintenance, client);
 	        }
 	        else{
-	        	return false;
+	        	return null;
 	        }
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 	public boolean rechercherStation(String numStation) throws RemoteException{
