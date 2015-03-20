@@ -115,17 +115,17 @@ public class Station implements Remote {
 		//proxy.getClientMotDePasse();
 		
 		  Scanner in = new Scanner(System.in);
-		  System.out.println("Veuillez saisir votre identifiant :");
+		  System.out.println("Veuillez saisir votre identifiant :\n");
 		  String id = in.nextLine();
-		  System.out.println("Veuillez saisir votre mot de passe :");
+		  System.out.println("Veuillez saisir votre mot de passe :\n");
 		  String mdp = in.nextLine();
 		  while (! proxy.authentificationClient(id, mdp)) {
-		      System.out.println("Échec de l’authentification.\nVeuillez saisir votre identifiant :");
+		      System.out.println("Échec de l’authentification.\nVeuillez saisir votre identifiant :\n");
 		  id = in.nextLine();
-		  System.out.println("Veuillez saisir votre mot de passe :");
+		  System.out.println("Veuillez saisir votre mot de passe :\n");
 		      mdp = in.nextLine();
 		  }
-		  System.out.println("Vous êtes connecté.");
+		  System.out.println("Vous êtes connecté.\n");
 		  in.close();
 	      
 	}

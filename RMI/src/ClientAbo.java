@@ -11,7 +11,7 @@ public class ClientAbo implements java.rmi.Remote {
 		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
 	      String nom;
 	      Scanner in = new Scanner(System.in);
-	      System.out.println("Veuillez saisir votre nom :");
+	      System.out.println("Veuillez saisir votre nom :\n");
 	      nom = in.nextLine();
 	      in.close();
 		  String[] retour = proxy.creerClient(nom);
