@@ -159,7 +159,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	String nom = rs.getString("numV");
 	        	String client = rs.getString("client");
 	        	String station = rs.getString("station");
-	        	System.out.println("V�lo " + nom + ", Client : " + client + " dans la station "+station);
+	        	System.out.println("Vélo " + nom + ", Client : " + client + " dans la station "+station);
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
