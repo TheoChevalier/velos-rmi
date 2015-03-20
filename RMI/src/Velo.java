@@ -1,7 +1,9 @@
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.util.HashMap;
 
 
-public class Velo {
+public class Velo implements Serializable{
 	private static HashMap<String, Velo> listeVelos = new HashMap<String, Velo>();
 
 	public static HashMap<String, Velo> getListeVelos() {

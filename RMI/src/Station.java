@@ -98,9 +98,13 @@ public class Station implements Remote {
 	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
-		proxy.creerStation("3", 0.5, 0.9, 12);
-		/*Velo velo = station.rechercherVeloLibre();
-		if(velo!=null){
+		Station station = new Station("1", 0.6, 0.3, 10);
+		station.lesVelos = proxy.majCacheStation("1");
+		for (Velo velo : station.lesVelos) {
+			System.out.println("Velo numero : " + velo.getNumV());
+		}
+		//Velo velo = station.rechercherVeloLibre();
+		/*if(velo!=null){
 			System.out.println("Vous pouvez prendre le vélo "+ velo.getNumV());
 		}
 		else{

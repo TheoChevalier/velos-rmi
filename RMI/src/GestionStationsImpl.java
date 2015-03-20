@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
+import java.util.Vector;
 
 
 public class GestionStationsImpl extends UnicastRemoteObject implements GestionStation {
@@ -89,7 +90,6 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		try{
 			Statement s = conn.createStatement();
 			s.executeUpdate("insert into STATIONS values ('"+ numS +"', "+longitude+", "+latitude+", "+capacite+")");
-			Station station = new Station(numS, longitude, latitude, capacite);
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -150,20 +150,20 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	}
 	
 	public Vector majCacheStation(String numStation) throws RemoteException{
+		Vector<Velo> lesVelos = new Vector<Velo>();
 		try{
 			Velo velo;
 			Statement s = conn.createStatement();
 			ResultSet rs = s.executeQuery("select numV, maintenance, station, client from VELOS where station = '"+numStation+"'");
-	        if (rs.next()) {
+	        while (rs.next()) {
 	        	String numV = rs.getString("numV");
 	        	boolean maintenance = rs.getBoolean("maintenance");
 	        	String numC = rs.getString("client");
 	        	Client client = rechercherClient(numC);
 	        	velo = new Velo(numV, maintenance, client);
+	        	lesVelos.add(velo);
 	        }
-	        else{
-	        	return null;
-	        }
+	        return lesVelos;
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -173,14 +173,13 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	
 	public Client rechercherClient(String numClient) throws RemoteException{
 		try{
-			Client client;
 			Statement s = conn.createStatement();
 			ResultSet rs = s.executeQuery("select * from CLIENTS where numC = '"+numClient+"'");
 	        if (rs.next()) {
 	        	String numC = rs.getString("numC");
 	        	String nomC = rs.getString("nomC");
 	        	String mdpC = rs.getString("mdpC");
-	        	client = new Client(numC, nomC, mdpC);
+	        	return new Client(numC, nomC, mdpC);
 	        }
 	        else{
 	        	return null;
