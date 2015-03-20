@@ -132,21 +132,25 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		return null;
 	}
 	
-	public boolean rechercherStation(String numStation) throws RemoteException{
+	public Station rechercherStation(String numStation) throws RemoteException{
 		try{
 			Statement s = conn.createStatement();
 			ResultSet rs = s.executeQuery("select * from STATIONS where numS = '"+numStation+"'");
 	        if (rs.next()) {
-	        	return true;
+	        	String numS = rs.getString("numS");
+	        	double longitude = rs.getDouble("longitude");
+	        	double latitude = rs.getDouble("latitude");
+	        	int capacite = rs.getInt("capacite");
+	        	return new Station(numS, longitude, latitude, capacite);
 	        }
 	        else{
-	        	return false;
+	        	return null;
 	        }
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 	public Vector majCacheStation(String numStation) throws RemoteException{
