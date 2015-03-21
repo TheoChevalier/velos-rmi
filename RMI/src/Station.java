@@ -24,9 +24,8 @@ public class Station implements Remote {
 	private double longitude;
 	private double latitude;
 	private int capacite;
-	private int nbPlaceLibre;
 	private Vector<Velo> lesVelos;
-	
+
 	public Station(String numS, double longitude, double latitude, int capacite){
 		this.numS=numS;
 		this.longitude=longitude;
@@ -35,7 +34,7 @@ public class Station implements Remote {
 		lesVelos = new Vector<Velo>();
 		listeStations.put(numS, this);
 	}
-	
+
 	public String getNumS() {
 		return numS;
 	}
@@ -68,12 +67,14 @@ public class Station implements Remote {
 		this.capacite = capacite;
 	}
 
-	public int getNbPlaceLibre() {
-		return nbPlaceLibre;
-	}
-
-	public void setNbPlaceLibre(int nbPlaceLibre) {
-		this.nbPlaceLibre = nbPlaceLibre;
+	public int getNbPlacesLibres() {
+		int nb = 0;
+		for (Velo v : lesVelos) {
+			if (v.getEtat().toString().equals("Maintenance") || v.getEtat().toString().equals("Emprunte")) {
+				nb++;
+			}
+		}
+		return capacite - nb;
 	}
 
 	public Vector<Velo> getLesVelos() {
@@ -96,36 +97,41 @@ public class Station implements Remote {
 		}
 		return v;
 	}
-	
+
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
 		Station station = new Station("1", 0.6, 0.3, 10);
-		station.lesVelos = proxy.majCacheStation("1");
+		station.lesVelos = proxy.majCacheStation(station.getNumS());
 		for (Velo velo : station.lesVelos) {
 			System.out.println("Velo numero : " + velo.getNumV());
 		}
-		
-		
+
+
 		//proxy.getClientMotDePasse();
-		
-		  Scanner in = new Scanner(System.in);
-		  System.out.println("Veuillez saisir votre identifiant :\n");
-		  String id = in.nextLine();
-		  System.out.println("Veuillez saisir votre mot de passe :\n");
-		  String mdp = in.nextLine();
-		  while (! proxy.authentificationClient(id, mdp)) {
-		      System.out.println("Échec de l’authentification.\nVeuillez saisir votre identifiant :\n");
-		  id = in.nextLine();
-		  System.out.println("Veuillez saisir votre mot de passe :\n");
-		      mdp = in.nextLine();
-		  }
-		  System.out.println("Vous êtes connecté.\n");
-		  in.close();
-		  
-		  Velo velo = station.rechercherVeloLibre();
-			if(velo!=null){
-				System.out.println("Vous pouvez prendre le vélo "+ velo.getNumV());
+
+		Scanner in = new Scanner(System.in);
+		System.out.println("Veuillez saisir votre identifiant :\n");
+		String id = in.nextLine();
+		System.out.println("Veuillez saisir votre mot de passe :\n");
+		String mdp = in.nextLine();
+		while (! proxy.authentificationClient(id, mdp)) {
+			System.out.println("Échec de l’authentification.\nVeuillez saisir votre identifiant :\n");
+			id = in.nextLine();
+			System.out.println("Veuillez saisir votre mot de passe :\n");
+			mdp = in.nextLine();
+		}
+		System.out.println("Vous êtes connecté.\n");
+		in.close();
+
+		Velo velo = station.rechercherVeloLibre();
+		if(velo != null) {
+			System.out.println("Vous pouvez prendre le vélo "+ velo.getNumV());
+			if (proxy.emprunterVelo(id, velo.getNumV())) {
+				station.lesVelos = proxy.majCacheStation(station.getNumS());
+				System.out.println("Vous avez emprunté le vélo "+ velo.getNumV());
+			} else {
+				System.out.println("Vous ne pouvez pas emprunter le vélo " + velo.getNumV());
 			}
-	      
+		}
 	}
 }

@@ -132,6 +132,22 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		return null;
 	}
 	
+	public boolean emprunterVelo(String id, String numV) throws RemoteException {
+		if(rechercherVelo(numV) != null && rechercherClient(id) != null && getVeloClient(id) == null) {
+			try {
+				Statement s = conn.createStatement();
+				s.executeUpdate("update VELOS set client='" + id + "' WHERE numV='" + numV + "'");
+				return true;
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	
 	public Station rechercherStation(String numStation) throws RemoteException{
 		try{
 			Statement s = conn.createStatement();
@@ -175,7 +191,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		return null;
 	}
 	
-	public Client rechercherClient(String numClient) throws RemoteException{
+	public Client rechercherClient(String numClient) throws RemoteException {
 		try{
 			Statement s = conn.createStatement();
 			ResultSet rs = s.executeQuery("select * from CLIENTS where numC = '"+numClient+"'");
@@ -186,6 +202,23 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	        	return new Client(numC, nomC, mdpC);
 	        }
 	        else{
+	        	return null;
+	        }
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Velo getVeloClient (String numClient) throws RemoteException {
+		try{
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select * from VELOS where numC = '"+numClient+"'");
+	        if (rs.next()) {
+	        	return rechercherVelo(rs.getString("numV"));
+	        }
+	        else {
 	        	return null;
 	        }
 		}

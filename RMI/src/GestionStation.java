@@ -18,4 +18,6 @@ public interface GestionStation extends Remote {
 	public Vector majCacheStation(String numStation) throws RemoteException;
 	public Client rechercherClient(String numClient) throws RemoteException;
 	public boolean authentificationClient(String numClient, String mdpClient) throws RemoteException;
+	public boolean emprunterVelo(String id, String numV) throws RemoteException;
+	public Velo getVeloClient(String idClient) throws RemoteException;
 }
