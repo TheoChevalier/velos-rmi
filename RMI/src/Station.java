@@ -146,6 +146,7 @@ public class Station implements Remote {
 		
 		if(station.getNbPlacesLibres()>0){
 			if(proxy.rendreVelo(station.getNumS(), idVelo)){
+				station.lesVelos = proxy.majCacheStation(station.getNumS());
 				System.out.println("Vous avez bien rendu le vélo " + idVelo);
 			} else {
 				System.out.println("Vous ne pouvez pas rendre le vélo " + idVelo);
