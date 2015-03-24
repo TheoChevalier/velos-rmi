@@ -26,7 +26,7 @@ public class Velo implements Serializable{
 		return client;
 	}
 
-	public void setStation(Client client) {
+	public void setClient(Client client) {
 		this.client = client;
 	}
 
@@ -61,6 +61,20 @@ public class Velo implements Serializable{
 
 	public Etat getEtat() {
 		return etat;
+	}
+	
+	public void afficherEtat(){
+		switch(etat){
+		case Libre:
+			System.out.println("Le vélo " + this.numV + " est opérationnel. Il est libre.");
+			break;
+		case Emprunte:
+			System.out.println("Le vélo " + this.numV + " est opérationnel. Il est en cours d'usage locatif par un abonné.");
+			break;
+		case Maintenance:
+			System.out.println("Le vélo " + this.numV + " est en maintenance dans les ateliers.");
+			break;
+		}
 	}
 
 	public void setEtat(Etat etat) {
