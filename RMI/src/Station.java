@@ -121,7 +121,7 @@ public class Station implements Remote {
 			mdp = in.nextLine();
 		}
 		System.out.println("Vous êtes connecté.\n");
-		in.close();
+		//in.close();
 
 		Velo velo = station.rechercherVeloLibre();
 		if(velo != null) {
@@ -132,6 +132,26 @@ public class Station implements Remote {
 			} else {
 				System.out.println("Vous ne pouvez pas emprunter le vélo " + velo.getNumV());
 			}
+		}
+		
+		System.out.println("\nRendre un vélo :");
+		in = new Scanner(System.in);
+		System.out.println("Veuillez saisir le numéro du vélo :\n");
+		String idVelo = in.nextLine();
+		while (proxy.rechercherVelo(idVelo) == null) {
+			System.out.println("Échec.\nVeuillez saisir le numéro du vélo :\n");
+			idVelo = in.nextLine();
+		}
+		in.close();
+		
+		if(station.getNbPlacesLibres()>0){
+			if(proxy.rendreVelo(station.getNumS(), idVelo)){
+				System.out.println("Vous avez bien rendu le vélo " + idVelo);
+			} else {
+				System.out.println("Vous ne pouvez pas rendre le vélo " + idVelo);
+			}
+		} else {
+			System.out.println("La station n'a plus de place disponible.");
 		}
 	}
 }

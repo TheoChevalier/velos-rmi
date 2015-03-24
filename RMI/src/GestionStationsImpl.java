@@ -147,7 +147,27 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 		return false;
 	}
-
+	
+	public boolean rendreVelo(String idStation, String idVelo) throws RemoteException {
+		if(rechercherStation(idStation) != null && rechercherVelo(idVelo) != null) {
+			Velo v = rechercherVelo(idVelo);
+			if (v.getClient() != null) {
+				try {
+					Statement s = conn.createStatement();
+					s.executeUpdate("update VELOS set client=null, station='"+ idStation+"' WHERE numV='" + idVelo + "'");
+					return true;
+				}
+				catch(SQLException e) {
+					e.printStackTrace();
+				}
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	
 
 	public Station rechercherStation(String numStation) throws RemoteException{
 		try{
