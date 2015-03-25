@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 import java.util.Vector;
 
 
-public class Station implements Remote {
+public class Station implements Remote , Serializable{
 	private static HashMap<String, Station> listeStations = new HashMap<String, Station>();
 
 	public static HashMap<String, Station> getListeStations() {

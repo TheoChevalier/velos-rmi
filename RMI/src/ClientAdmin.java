@@ -22,6 +22,12 @@ public class ClientAdmin implements java.rmi.Remote {
 		}
 		Velo v = proxy.rechercherVelo(id);
 		v.afficherEtat();
+		
+		//station où est garé
+		if(v.getEtat().toString().equals("Libre")){
+			Station s = proxy.stationDuVelo(id);
+			System.out.println("Le vélo " + id + " est dans la station " + s.getNumS() + ".");
+		}
 	}
 }
 

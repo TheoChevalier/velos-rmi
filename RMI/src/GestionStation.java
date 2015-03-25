@@ -22,6 +22,7 @@ public interface GestionStation extends Remote {
 	public boolean emprunterVelo(String id, String numV) throws RemoteException;
 	public Velo getVeloClient(String idClient) throws RemoteException;
 	public boolean rendreVelo(String idStation, String idVelo) throws RemoteException;
+	public Station stationDuVelo(String velo) throws RemoteException;
 	public Station rechercherStationPlusProche(String idStation) throws RemoteException;
 	public TreeMap<Double, Station> stationsTriees(String idStation) throws RemoteException;
 }

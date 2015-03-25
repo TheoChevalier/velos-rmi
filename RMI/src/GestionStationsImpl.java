@@ -384,7 +384,20 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	}
 
 
-
+	public Station stationDuVelo(String velo) throws RemoteException{
+		try{
+			Statement s = conn.createStatement();
+			ResultSet rs = s.executeQuery("select station from VELOS where numV = '"+ velo +"'");
+			while (rs.next()) {
+				String station = rs.getString("station");
+				return rechercherStation(station);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 
 }
