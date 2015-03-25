@@ -179,7 +179,9 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 				double longitude = rs.getDouble("longitude");
 				double latitude = rs.getDouble("latitude");
 				int capacite = rs.getInt("capacite");
-				return new Station(numS, longitude, latitude, capacite);
+				Station station = new Station(numS, longitude, latitude, capacite);
+				station.setLesVelos(majCacheStation(numS));
+				return station;
 			}
 			else{
 				return null;
@@ -284,6 +286,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 					double latitude = rs.getDouble("latitude");
 					int capacite = rs.getInt("capacite");
 					stationTemp = new Station(numS, longitude, latitude, capacite);
+					stationTemp.setLesVelos(majCacheStation(numS));
 					dist.put(Distance.distanceInKilometers(laStation.getLatitude(), laStation.getLongitude(), stationTemp.getLatitude(), stationTemp.getLongitude()), stationTemp);
 				}
 				return dist;
