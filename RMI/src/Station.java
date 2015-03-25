@@ -129,6 +129,11 @@ public class Station implements Remote {
 			} else {
 				System.out.println("Vous ne pouvez pas emprunter le vélo " + velo.getNumV());
 			}
+		} else {
+			if (proxy.rechercherStationPlusProche(station.getNumS()) != null){
+				Station stationPlusProche = proxy.rechercherStationPlusProche(station.getNumS());
+				System.out.println("La station la plus proche ayant des vélos disponibles est la numéro " + stationPlusProche.getNumS());
+			}
 		}
 		
 		System.out.println("\nRendre un vélo :");
@@ -150,7 +155,6 @@ public class Station implements Remote {
 			}
 		} else {
 			System.out.println("La station n'a plus de place disponible.");
-			
 		}
 	}
 }
