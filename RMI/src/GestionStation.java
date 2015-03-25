@@ -11,7 +11,7 @@ public interface GestionStation extends Remote {
 	
 	public String[] creerClient(String nom) throws RemoteException;
 	public void creerStation(String string, double longitude, double latitude, int capacite) throws RemoteException;
-	public void creerVelo(String numV, boolean maintenance) throws RemoteException;
+	public int creerVelo(boolean maintenance) throws RemoteException;
 	public void affecterVeloStation(String numVelo, String numStation) throws RemoteException;
 	public Velo rechercherVelo(String numVelo) throws RemoteException;
 	public Station rechercherStation(String numStation) throws RemoteException;
