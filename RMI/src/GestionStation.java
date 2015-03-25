@@ -25,4 +25,5 @@ public interface GestionStation extends Remote {
 	public Station stationDuVelo(String velo) throws RemoteException;
 	public Station rechercherStationPlusProche(String idStation) throws RemoteException;
 	public TreeMap<Double, Station> stationsTriees(String idStation) throws RemoteException;
+	public Station rechercherStationPlusProcheDepot(String idStation) throws RemoteException;
 }

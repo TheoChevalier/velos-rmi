@@ -168,6 +168,10 @@ public class Station implements Remote , Serializable{
 			}
 		} else {
 			System.out.println("La station n'a plus de place disponible.");
+			if (proxy.rechercherStationPlusProcheDepot(station.getNumS()) != null){
+				Station stationPlusProche = proxy.rechercherStationPlusProcheDepot(station.getNumS());
+				System.out.println("La station la plus proche ayant des places disponibles est la numéro " + stationPlusProche.getNumS());
+			}
 		}
 	}
 }

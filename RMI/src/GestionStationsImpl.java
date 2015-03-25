@@ -312,6 +312,20 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 		return null;
 	}
+	
+	public Station rechercherStationPlusProcheDepot(String idStation) throws RemoteException {
+		if (rechercherStation(idStation) != null && stationsTriees(idStation) != null) {
+			TreeMap<Double, Station> dist = stationsTriees(idStation);
+			for (double distance : dist.keySet()) {
+				Station s = dist.get(distance);
+				int disp = s.getNbPlacesLibres();
+				if (disp>0){
+					return s;
+				}
+			}
+		}
+		return null;
+	}
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		System.out.println("coucou2");
