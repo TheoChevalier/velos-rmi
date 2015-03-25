@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.Vector;
 
 
@@ -267,7 +268,47 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 		return false;
 	}
-
+	
+	public TreeMap<Double, Station> stationsTriees(String idStation) throws RemoteException{
+		TreeMap<Double, Station> dist = new TreeMap<Double, Station>();
+		Station laStation;
+		Station stationTemp;
+		if (rechercherStation(idStation) != null){
+			laStation = rechercherStation(idStation);
+			try{
+				Statement s = conn.createStatement();
+				ResultSet rs = s.executeQuery("select * from STATIONS");
+				while (rs.next()) {
+					String numS = rs.getString("numS");
+					double longitude = rs.getDouble("longitude");
+					double latitude = rs.getDouble("latitude");
+					int capacite = rs.getInt("capacite");
+					stationTemp = new Station(numS, longitude, latitude, capacite);
+					dist.put(Distance.distanceInKilometers(laStation.getLatitude(), laStation.getLongitude(), stationTemp.getLatitude(), stationTemp.getLongitude()), stationTemp);
+				}
+				return dist;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			return null;
+		}
+		return null;
+	}
+	
+	public Station rechercherStationPlusProche(String idStation) throws RemoteException {
+		if (rechercherStation(idStation) != null && stationsTriees(idStation) != null) {
+			TreeMap<Double, Station> dist = stationsTriees(idStation);
+			for (double distance : dist.keySet()) {
+				Station s = dist.get(distance);
+				int disp = s.getNbPlacesLibres();
+				if (disp>0){
+					return s;
+				}
+			}
+		}
+		return null;
+	}
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		System.out.println("coucou2");
