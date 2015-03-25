@@ -74,18 +74,20 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 	}
 
-	public void creerVelo(String numV, boolean maintenance) throws RemoteException{
+	public int creerVelo(boolean maintenance) throws RemoteException {
 		try{
-			int n;
+			int numV;
 			Statement s = conn.createStatement();
-			n=s.executeUpdate("insert into VELOS values ('"+numV+"', "+maintenance+", null, null)");
-			System.out.println(n);
-			System.out.println("insert into VELOS values ('"+numV+"', "+maintenance+", null, null)");
-			Velo velo = new Velo(numV, maintenance);
+			numV = s.executeUpdate("SELECT COUNT(*) FROM VELOS");
+			numV++;
+			s.executeUpdate("insert into VELOS values ('"+ numV +"', "+maintenance+", null, null)");
+			System.out.println("insert into VELOS values ('"+ numV +"', "+maintenance+", null, null)");
+			return numV;
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 		}
+		return 0;
 	}
 
 	public void creerStation(String numS, double longitude, double latitude, int capacite) throws RemoteException{
@@ -101,9 +103,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 
 	public void affecterVeloStation(String numVelo, String numStation) throws RemoteException{
 		if(rechercherStation(numStation) != null && rechercherVelo(numVelo) != null){
-			try{
-				Station station = Station.getListeStations().get(numStation);
-				Velo velo = Velo.getListeVelos().get(numVelo);
+			try {
 				Statement s = conn.createStatement();
 				s.executeUpdate("update VELOS set station='"+ numStation +"' WHERE numV='"+numVelo+"'");
 			}
