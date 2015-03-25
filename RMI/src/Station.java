@@ -81,6 +81,16 @@ public class Station implements Remote , Serializable{
 	public Vector<Velo> getLesVelos() {
 		return lesVelos;
 	}
+	
+	public int getNbVeloLibre() {
+		int nb=0;
+		for (Velo velo : lesVelos) {
+			if (velo.getEtat().toString().equals("Libre")){
+				nb++;
+			}
+		}
+		return nb;
+	}
 
 	public void setLesVelos(Vector<Velo> lesVelos) {
 		this.lesVelos = lesVelos;
@@ -106,6 +116,8 @@ public class Station implements Remote , Serializable{
 		for (Velo velo : station.lesVelos) {
 			System.out.println("Velo numero : " + velo.getNumV());
 		}
+		
+		System.out.println(station.getNbVeloLibre());
 
 		Scanner in = new Scanner(System.in);
 		System.out.println("Veuillez saisir votre identifiant :\n");

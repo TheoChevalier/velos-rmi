@@ -301,7 +301,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 			TreeMap<Double, Station> dist = stationsTriees(idStation);
 			for (double distance : dist.keySet()) {
 				Station s = dist.get(distance);
-				int disp = s.getNbPlacesLibres();
+				int disp = s.getNbVeloLibre();
 				if (disp>0){
 					return s;
 				}
