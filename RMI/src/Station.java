@@ -101,14 +101,11 @@ public class Station implements Remote , Serializable{
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
-		Station station = new Station("1", 0.6, 0.3, 10);
+		Station station = new Station(args[0], Double.parseDouble(args[1]), Double.parseDouble(args[2]), Integer.parseInt(args[3]));
 		station.lesVelos = proxy.majCacheStation(station.getNumS());
 		for (Velo velo : station.lesVelos) {
 			System.out.println("Velo numero : " + velo.getNumV());
 		}
-
-
-		//proxy.getClientMotDePasse();
 
 		Scanner in = new Scanner(System.in);
 		System.out.println("Veuillez saisir votre identifiant :\n");
@@ -154,6 +151,7 @@ public class Station implements Remote , Serializable{
 			}
 		} else {
 			System.out.println("La station n'a plus de place disponible.");
+			
 		}
 	}
 }
