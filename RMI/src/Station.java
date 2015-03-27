@@ -99,21 +99,25 @@ public class Station implements Remote , Serializable{
 	public Velo rechercherVeloLibre(){
 		Velo v = null;
 		boolean trouve=false;
-		Iterator it = lesVelos.iterator();
+		Iterator it = this.getLesVelos().iterator();
 		while(it.hasNext() && !trouve){
 			v=(Velo)it.next();
 			if(v.getClient()==null && !v.getEtat().toString().equals("Maintenance")){
 				trouve=true;
 			}
 		}
-		return v;
+		if (trouve){
+			return v;
+		} else {
+			return null;
+		}
 	}
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
 		Station station = new Station(args[0], Double.parseDouble(args[1]), Double.parseDouble(args[2]), Integer.parseInt(args[3]));
-		station.lesVelos = proxy.majCacheStation(station.getNumS());
-		for (Velo velo : station.lesVelos) {
+		station.setLesVelos(proxy.majCacheStation(station.getNumS()));
+		for (Velo velo : station.getLesVelos()) {
 			System.out.println("Velo numero : " + velo.getNumV());
 		}
 		
