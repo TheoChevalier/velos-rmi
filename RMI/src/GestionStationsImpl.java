@@ -326,6 +326,26 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 		}
 		return null;
 	}
+	
+	public boolean modifierEtatVelo(String numV, boolean maintenance) throws RemoteException {
+		if(rechercherVelo(numV) != null) {
+			try {
+				Velo v = rechercherVelo(numV);
+				if (v.getClient() == null) {
+					Statement s = conn.createStatement();
+					s.executeUpdate("update VELOS set maintenance=" + maintenance + " WHERE numV='" + numV + "'");
+					return true;
+				} else {
+					return false;
+				}
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		return false;
+	}
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
 		System.out.println("coucou2");
