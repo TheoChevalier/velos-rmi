@@ -85,7 +85,7 @@ public class Station implements Remote , Serializable{
 	public int getNbVeloLibre() {
 		int nb=0;
 		for (Velo velo : lesVelos) {
-			if (velo.getEtat().toString().equals("Libre")){
+			if (velo.getClient()==null && !velo.getEtat().toString().equals("Maintenance")){
 				nb++;
 			}
 		}
