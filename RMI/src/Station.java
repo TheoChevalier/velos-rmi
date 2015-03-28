@@ -147,9 +147,13 @@ public class Station implements Remote , Serializable{
 				System.out.println("Vous ne pouvez pas emprunter le vélo " + velo.getNumV());
 			}
 		} else {
-			if (proxy.rechercherStationPlusProche(station.getNumS()) != null){
-				Station stationPlusProche = proxy.rechercherStationPlusProche(station.getNumS());
-				System.out.println("La station la plus proche ayant des vélos disponibles est la numéro " + stationPlusProche.getNumS());
+			if (proxy.getVeloClient(id) == null) {
+				if (proxy.rechercherStationPlusProche(station.getNumS()) != null){
+					Station stationPlusProche = proxy.rechercherStationPlusProche(station.getNumS());
+					System.out.println("La station la plus proche ayant des vélos disponibles est la numéro " + stationPlusProche.getNumS());
+				}
+			} else {
+				System.out.println("Vous ne pouvez pas emprunter un vélo, vous en avez déjà un.");
 			}
 		}
 		
