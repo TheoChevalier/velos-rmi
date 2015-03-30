@@ -97,8 +97,8 @@ public class EmprunterUnVeloFrame extends JFrame {
 
 		final JLabel test = new JLabel("");
 		test.setForeground(Color.RED);
-		test.setFont(new Font("Tahoma", Font.ITALIC, 20));
-		test.setBounds(58, 228, 450, 46);
+		test.setFont(new Font("Tahoma", Font.ITALIC, 18));
+		test.setBounds(11, 228, 540, 46);
 		contentPane.add(test);
 		
 
