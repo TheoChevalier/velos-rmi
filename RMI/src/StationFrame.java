@@ -57,7 +57,7 @@ public class StationFrame extends JFrame {
 		//Police des pop-up
 		UIManager.put("OptionPane.messageFont", new FontUIResource(new Font(
 				"Tahoma", Font.PLAIN, 18)));
-		GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
+		proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
 		station = new Station(numS, l, g, cap);
 		station.setLesVelos(proxy.majCacheStation(station.getNumS()));
 
@@ -91,7 +91,7 @@ public class StationFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				EmprunterUnVeloFrame ev;
 				try {
-					ev = new EmprunterUnVeloFrame(station);
+					ev = new EmprunterUnVeloFrame(station, proxy);
 					setVisible(false);
 					ev.setVisible(true);
 				} catch (MalformedURLException | RemoteException
@@ -110,7 +110,7 @@ public class StationFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				RendreUnVeloFrame rv;
 				try {
-					rv = new RendreUnVeloFrame(station);
+					rv = new RendreUnVeloFrame(station, proxy);
 					setVisible(false);
 					rv.setVisible(true);
 				} catch (MalformedURLException | RemoteException

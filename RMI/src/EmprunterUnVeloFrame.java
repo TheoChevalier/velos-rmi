@@ -41,7 +41,7 @@ public class EmprunterUnVeloFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EmprunterUnVeloFrame frame = new EmprunterUnVeloFrame(station);
+					EmprunterUnVeloFrame frame = new EmprunterUnVeloFrame(station, proxy);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,12 +56,13 @@ public class EmprunterUnVeloFrame extends JFrame {
 	 * @throws RemoteException 
 	 * @throws MalformedURLException 
 	 */
-	public EmprunterUnVeloFrame(Station s) throws MalformedURLException, RemoteException, NotBoundException {
+	public EmprunterUnVeloFrame(Station s, GestionStation leProxy) throws MalformedURLException, RemoteException, NotBoundException {
 		//Police des pop-up
 		UIManager.put("OptionPane.messageFont", new FontUIResource(new Font(
 	              "Tahoma", Font.PLAIN, 18)));
-		proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
-		 
+		//proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
+		this.proxy = leProxy;
+		
 		this.station = s;
 		setTitle("Vélo Toulouse - Emprunter un vélo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
