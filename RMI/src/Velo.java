@@ -17,11 +17,11 @@ public class Velo implements Serializable{
 	enum Etat{
 		Emprunte, Libre, Maintenance
 	}
-	
+
 	private String numV;
 	private Etat etat;
 	private Client client;
-	
+
 	public Client getClient() {
 		return client;
 	}
@@ -60,23 +60,21 @@ public class Velo implements Serializable{
 	public Etat getEtat() {
 		return etat;
 	}
-	
-	public void afficherEtat(){
+
+	public String afficherEtat(){
 		switch(etat){
 		case Libre:
-			System.out.println("Le vélo " + this.numV + " est opérationnel. Il est libre.");
-			break;
+			return "Le vélo " + this.numV + " est opérationnel. Il est libre.";
 		case Emprunte:
-			System.out.println("Le vélo " + this.numV + " est opérationnel. Il est en cours d'usage locatif par un abonné.");
-			break;
+			return "Le vélo " + this.numV + " est opérationnel. Il est en cours d'usage locatif par un abonné.";
 		case Maintenance:
-			System.out.println("Le vélo " + this.numV + " est en maintenance dans les ateliers.");
-			break;
+			return "Le vélo " + this.numV + " est en maintenance dans les ateliers.";
 		}
+		return null;
 	}
 
 	public void setEtat(Etat etat) {
 		this.etat = etat;
 	}
-	
+
 }

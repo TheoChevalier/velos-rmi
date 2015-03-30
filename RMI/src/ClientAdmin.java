@@ -21,7 +21,7 @@ public class ClientAdmin implements java.rmi.Remote {
 			id = in.nextLine();
 		}
 		Velo v = proxy.rechercherVelo(id);
-		v.afficherEtat();
+		System.out.println(v.afficherEtat());
 		
 		//station où est garé
 		if(v.getEtat().toString().equals("Libre")){
