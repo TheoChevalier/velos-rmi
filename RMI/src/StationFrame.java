@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -138,8 +139,26 @@ public class StationFrame extends JFrame {
 				}
 			}
 		});
-		btnAdministration.setBounds(381, 260, 199, 34);
+		btnAdministration.setBounds(10, 262, 199, 34);
 		contentPane.add(btnAdministration);
+		
+		final JButton btnQuitter = new JButton("Quitter");
+		btnQuitter.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnQuitter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				quitter();
+			}
+		});
+		btnQuitter.setBounds(465, 262, 115, 32);
+		contentPane.add(btnQuitter);
 	}
-
+	public void quitter(){
+		int i=JOptionPane.showConfirmDialog(this, "Voulez vous vraiment quitter l'application ?","Quitter",JOptionPane.YES_NO_OPTION);
+		switch(i)
+		 {
+		  case 0 :
+		   System.exit(0);
+		  case 1 :
+		 }
+	}
 }

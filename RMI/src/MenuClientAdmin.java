@@ -53,6 +53,7 @@ public class MenuClientAdmin extends JFrame {
 	public MenuClientAdmin() throws MalformedURLException, RemoteException, NotBoundException {
 		final GestionStation proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
 		
+		setTitle("Vélo Toulouse - Administration");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 677, 527);
 		setLocationRelativeTo(null);

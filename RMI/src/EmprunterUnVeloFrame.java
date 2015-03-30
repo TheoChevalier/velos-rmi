@@ -136,7 +136,12 @@ public class EmprunterUnVeloFrame extends JFrame {
 											}
 										}
 									} else {
-										int choix1 = JOptionPane.showConfirmDialog(btnValider, "Vous ne pouvez pas emprunter le vélo " + velo.getNumV() + ".", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
+										if(proxy.getVeloClient(tbxIdentifiant.getText()) != null) {
+											int choix1 = JOptionPane.showConfirmDialog(btnValider, "Vous empruntez déjà le vélo " + ((Velo)proxy.getVeloClient(tbxIdentifiant.getText())).getNumV() + ".", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
+										}
+										if (proxy.rechercherVelo(velo.getNumV()) == null){
+											int choix1 = JOptionPane.showConfirmDialog(btnValider, "Erreur lors de la recherche du vélo.", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
+										}
 									}
 								} catch (RemoteException e1) {
 									// TODO Auto-generated catch block

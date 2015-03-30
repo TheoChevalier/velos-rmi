@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 
 public class RendreUnVeloFrame extends JFrame {
@@ -58,7 +59,7 @@ public class RendreUnVeloFrame extends JFrame {
 				"Tahoma", Font.PLAIN, 18)));
 		//proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
 		this.proxy = leProxy;
-		
+
 		this.station = s;
 		setTitle("Vélo Toulouse - Rendre un vélo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,21 +91,30 @@ public class RendreUnVeloFrame extends JFrame {
 						try {
 							if(proxy.rendreVelo(station.getNumS(), txtNumv.getText())){
 								station.setLesVelos(proxy.majCacheStation(station.getNumS()));
-								int choix1 = JOptionPane.showConfirmDialog(btnValider, "Vous avez bien rendu le vélo " + txtNumv.getText() + ".", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
-								if(choix1 == JOptionPane.OK_OPTION){
-									StationFrame sf;
-									try {
-										sf = new StationFrame();
-										setVisible(false);
-										sf.setVisible(true);
-									} catch (MalformedURLException | RemoteException
-											| NotBoundException e1) {
-										// TODO Auto-generated catch block
-										e1.printStackTrace();
-									}
+								JOptionPane.showMessageDialog(btnValider, "Vous avez bien rendu le vélo " + txtNumv.getText() + ".");
+
+								StationFrame sf;
+								try {
+									sf = new StationFrame();
+									setVisible(false);
+									sf.setVisible(true);
+								} catch (MalformedURLException | RemoteException
+										| NotBoundException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
 								}
 							} else {
-								int choix2 = JOptionPane.showConfirmDialog(btnValider, "Vous ne pouvez pas rendre le vélo " + txtNumv.getText() + ".", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
+								if(proxy.rechercherVelo(txtNumv.getText()) == null){
+									JOptionPane.showMessageDialog(btnValider, "Vous ne pouvez pas rendre le vélo " + txtNumv.getText() + ", il n'existe pas.", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
+								} else {
+									Velo v = proxy.rechercherVelo(txtNumv.getText());
+									if (v.getClient() == null) {
+										JOptionPane.showMessageDialog(btnValider, "Erreur, le vélo " + txtNumv.getText() + " n'est pas emprunté.", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
+									}
+								}
+								if(proxy.rechercherStation(station.getNumS()) == null) {
+									JOptionPane.showMessageDialog(btnValider, "Erreur, la station " + station.getNumS() + " n'existe pas.", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
+								}
 							}
 						} catch (RemoteException e1) {
 							// TODO Auto-generated catch block
@@ -114,20 +124,31 @@ public class RendreUnVeloFrame extends JFrame {
 						System.out.println("La station n'a plus de place disponible.");
 						try {
 							if (proxy.rechercherStationPlusProcheDepot(station.getNumS()) != null){
-
 								Station stationPlusProche = proxy.rechercherStationPlusProcheDepot(station.getNumS());
-								int choix1 = JOptionPane.showConfirmDialog(btnValider, "La station la plus proche ayant des places disponibles est la numéro " + stationPlusProche.getNumS(), "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
-								if(choix1 == JOptionPane.OK_OPTION){
-									StationFrame sf;
-									try {
-										sf = new StationFrame();
-										setVisible(false);
-										sf.setVisible(true);
-									} catch (MalformedURLException | RemoteException
-											| NotBoundException e1) {
-										// TODO Auto-generated catch block
-										e1.printStackTrace();
-									}
+								JOptionPane.showMessageDialog(btnValider, "La station la plus proche ayant des places disponibles est la numéro " + stationPlusProche.getNumS() + ".");
+
+								StationFrame sf;
+								try {
+									sf = new StationFrame();
+									setVisible(false);
+									sf.setVisible(true);
+								} catch (MalformedURLException | RemoteException
+										| NotBoundException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							} else {
+								JOptionPane.showMessageDialog(btnValider, "Nous nous excusons, il n'y a plus de station libre.");
+
+								StationFrame sf;
+								try {
+									sf = new StationFrame();
+									setVisible(false);
+									sf.setVisible(true);
+								} catch (MalformedURLException | RemoteException
+										| NotBoundException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
 								}
 							}
 						} catch (RemoteException e1) {
@@ -136,18 +157,8 @@ public class RendreUnVeloFrame extends JFrame {
 						}
 					}
 				}else{
-					int choix1 = JOptionPane.showConfirmDialog(btnValider, "Veuillez saisir le numéro du vélo.", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
+					JOptionPane.showMessageDialog(btnValider, "Veuillez saisir le numéro du vélo.");
 				}
-
-				//sinon
-				//int choix2 = JOptionPane.showConfirmDialog(btnValider, "La station 'numS' n'a plus de place disponible. \nLa station la plus proche est la station 'numS'.", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
-				/*
-				 * if(choix2 == JOptionPane.OK_OPTION){
-					StationFrame sf = new StationFrame();
-					setVisible(false);
-					sf.setVisible(true);
-				}
-				 */
 			}
 		});
 		btnValider.setBounds(136, 147, 112, 44);
@@ -171,7 +182,7 @@ public class RendreUnVeloFrame extends JFrame {
 		});
 		btnAnnuler.setBounds(278, 147, 118, 44);
 		contentPane.add(btnAnnuler);
-		
+
 		lblRendreUnVlo = new JLabel("Rendre un vélo");
 		lblRendreUnVlo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRendreUnVlo.setFont(new Font("Tahoma", Font.BOLD, 30));
