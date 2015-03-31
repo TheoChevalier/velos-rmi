@@ -153,7 +153,7 @@ public class StationFrame extends JFrame {
 		contentPane.add(btnQuitter);
 	}
 	public void quitter(){
-		int i=JOptionPane.showConfirmDialog(this, "Voulez vous vraiment quitter l'application ?","Quitter",JOptionPane.YES_NO_OPTION);
+		int i=JOptionPane.showConfirmDialog(this, "Voulez-vous vraiment quitter l'application ?","Quitter",JOptionPane.YES_NO_OPTION);
 		switch(i)
 		 {
 		  case 0 :

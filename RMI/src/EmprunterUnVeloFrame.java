@@ -152,7 +152,7 @@ public class EmprunterUnVeloFrame extends JFrame {
 									if (proxy.getVeloClient(tbxIdentifiant.getText()) == null) {
 										if (proxy.rechercherStationPlusProche(station.getNumS()) != null){
 											Station stationPlusProche = proxy.rechercherStationPlusProche(station.getNumS());
-											int choix1 = JOptionPane.showConfirmDialog(btnValider, "La station la plus proche ayant des vélos disponibles est la numéro " + stationPlusProche.getNumS(), "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
+											int choix1 = JOptionPane.showConfirmDialog(btnValider, "La station la plus proche ayant des vélos disponibles est la numéro " + stationPlusProche.getNumS() + ". Il reste " + stationPlusProche.getNbVeloLibre() + " vélos.", "Vélo Toulouse - Message", JOptionPane.CLOSED_OPTION);
 										}
 									} else {
 										test.setText("Vous ne pouvez pas emprunter un vélo.");

@@ -125,7 +125,7 @@ public class RendreUnVeloFrame extends JFrame {
 						try {
 							if (proxy.rechercherStationPlusProcheDepot(station.getNumS()) != null){
 								Station stationPlusProche = proxy.rechercherStationPlusProcheDepot(station.getNumS());
-								JOptionPane.showMessageDialog(btnValider, "La station la plus proche ayant des places disponibles est la numéro " + stationPlusProche.getNumS() + ".");
+								JOptionPane.showMessageDialog(btnValider, "La station la plus proche ayant des places disponibles est la numéro " + stationPlusProche.getNumS() + ". Il reste " + stationPlusProche.getNbPlacesLibres() + " places.");
 
 								StationFrame sf;
 								try {
