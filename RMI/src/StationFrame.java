@@ -64,11 +64,6 @@ public class StationFrame extends JFrame {
 			proxy.creerStation(numS,  lon, lat,  cap);
 		}
 		station.setLesVelos(proxy.majCacheStation(station.getNumS()));
-		System.out.println("PLACES LIBRES MAGGLE : " + station.getNbPlacesLibres());
-		for(Velo v : station.getLesVelos()) {
-			System.out.println(v.getNumV() + ", état : " + v.afficherEtat());
-		}
-		System.out.println();
 
 		setTitle("Vélo Toulouse - Accueil");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,7 +145,7 @@ public class StationFrame extends JFrame {
 		btnAdministration.setBounds(10, 262, 199, 34);
 		contentPane.add(btnAdministration);
 		
-		final JButton btnQuitter = new JButton("Quitter");
+		final JButton btnQuitter = new JButton("Annuler");
 		btnQuitter.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
