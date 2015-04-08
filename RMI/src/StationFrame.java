@@ -24,8 +24,8 @@ public class StationFrame extends JFrame {
 	private JPanel contentPane;
 	private static Station station;
 	private static String numS;
-	private static double l;
-	private static double g;
+	private static double lon;
+	private static double lat;
 	private static int cap;
 
 	/**
@@ -33,8 +33,8 @@ public class StationFrame extends JFrame {
 	 */
 	public static void main(String[] args) {
 		numS = args[0];
-		l = Double.parseDouble(args[1]);
-		g = Double.parseDouble(args[2]);
+		lon = Double.parseDouble(args[1]);
+		lat = Double.parseDouble(args[2]);
 		cap = Integer.parseInt(args[3]);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -59,8 +59,16 @@ public class StationFrame extends JFrame {
 		UIManager.put("OptionPane.messageFont", new FontUIResource(new Font(
 				"Tahoma", Font.PLAIN, 18)));
 		proxy = (GestionStation) Naming.lookup("rmi://localhost:1099/Gestionnaire");
-		station = new Station(numS, l, g, cap);
+		station = new Station(numS, lon, lat, cap);
+		if (proxy.rechercherStation(numS) == null) {
+			proxy.creerStation(numS,  lon, lat,  cap);
+		}
 		station.setLesVelos(proxy.majCacheStation(station.getNumS()));
+		System.out.println("PLACES LIBRES MAGGLE : " + station.getNbPlacesLibres());
+		for(Velo v : station.getLesVelos()) {
+			System.out.println(v.getNumV() + ", état : " + v.afficherEtat());
+		}
+		System.out.println();
 
 		setTitle("Vélo Toulouse - Accueil");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,7 +89,7 @@ public class StationFrame extends JFrame {
 		lblCapacitDeLa.setBounds(66, 74, 315, 29);
 		contentPane.add(lblCapacitDeLa);
 
-		JLabel lblNombreDeVlos = new JLabel("Nombre de vélo disponible : " + station.getNbVeloLibre());
+		JLabel lblNombreDeVlos = new JLabel("Nombre de vélos disponibles : " + station.getNbVeloLibre());
 		lblNombreDeVlos.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNombreDeVlos.setBounds(66, 104, 414, 29);
 		contentPane.add(lblNombreDeVlos);

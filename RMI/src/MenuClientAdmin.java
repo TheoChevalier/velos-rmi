@@ -27,6 +27,8 @@ public class MenuClientAdmin extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNumv;
 	private JTextField txtNumVEtat;
+	private JTextField numStation;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -55,7 +57,7 @@ public class MenuClientAdmin extends JFrame {
 		
 		setTitle("Vélo Toulouse - Administration");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 677, 527);
+		setBounds(100, 100, 679, 842);
 		setLocationRelativeTo(null);
 		
 		contentPane = new JPanel();
@@ -170,7 +172,7 @@ public class MenuClientAdmin extends JFrame {
 							if(proxy.modifierEtatVelo(txtNumVEtat.getText(), etat)){
 								lblMsgEtat.setText("L'état du vélo " + txtNumVEtat.getText() + " a bien été modifié.");
 							} else {
-								lblMsgEtat.setText("Echec lors de la modification de l'état du vélo " + txtNumVEtat.getText() + ".");
+								lblMsgEtat.setText("Échec lors de la modification de l'état du vélo " + txtNumVEtat.getText() + ".");
 							}
 						} else {
 							lblMsgEtat.setText("Ce vélo n'existe pas");
@@ -204,7 +206,85 @@ public class MenuClientAdmin extends JFrame {
 			}
 		});
 		btnQuitter.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnQuitter.setBounds(527, 423, 110, 32);
+		btnQuitter.setBounds(527, 726, 110, 32);
 		contentPane.add(btnQuitter);
+		
+		JLabel lblAffecterDesVlos = new JLabel("Affecter des vélos à une station");
+		lblAffecterDesVlos.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblAffecterDesVlos.setBounds(15, 442, 423, 37);
+		contentPane.add(lblAffecterDesVlos);
+		
+		JLabel lblSaisirLeNumro_1 = new JLabel("Saisir le numéro de la station :");
+		lblSaisirLeNumro_1.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblSaisirLeNumro_1.setBounds(25, 491, 292, 30);
+		contentPane.add(lblSaisirLeNumro_1);
+		
+		numStation = new JTextField();
+		numStation.setFont(new Font("Dialog", Font.PLAIN, 18));
+		numStation.setColumns(10);
+		numStation.setBounds(395, 493, 67, 26);
+		contentPane.add(numStation);
+		
+		JLabel lblSaisirLeNombre = new JLabel("Saisir le nombre de vélos à affecter :");
+		lblSaisirLeNombre.setFont(new Font("Dialog", Font.PLAIN, 18));
+		lblSaisirLeNombre.setBounds(25, 543, 352, 30);
+		contentPane.add(lblSaisirLeNombre);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Dialog", Font.PLAIN, 18));
+		textField.setColumns(10);
+		textField.setBounds(395, 545, 67, 26);
+		contentPane.add(textField);
+		
+		final JLabel labelAffectation = new JLabel("");
+		labelAffectation.setFont(new Font("Dialog", Font.ITALIC, 18));
+		labelAffectation.setBounds(15, 663, 632, 30);
+		contentPane.add(labelAffectation);
+		
+		JButton btnAffecter = new JButton("Affecter");
+		btnAffecter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (!numStation.getText().equals("") && !textField.getText().equals("")) {
+					try {
+						Station s = proxy.rechercherStation(numStation.getText());
+						if (s == null) {
+							labelAffectation.setText("La station n'existe pas.");
+						} else {
+							int nb = Integer.parseInt(textField.getText());
+							if (nb > 0) {
+								if (nb <= s.getNbPlacesLibres()) {
+									for(int i = 0; i < nb; i++) {
+										int numVelo = proxy.creerVelo(false);
+										proxy.affecterVeloStation(((Integer)numVelo).toString(), numStation.getText());
+									}
+									if (nb > 1) {
+										labelAffectation.setText("Les vélos ont été correctement ajoutés.");
+									} else {
+										labelAffectation.setText("Le vélo a été correctement ajouté.");
+									}
+								} else {
+									labelAffectation.setText("Il n'y a pas assez de places libres.");
+								}
+							} else {
+								labelAffectation.setText("Le nombre d'affectations doit être positif.");
+							}
+						}
+					}
+					catch (NumberFormatException e) {
+						e.printStackTrace();
+						labelAffectation.setText("Le format du nombre d'affectations est incorrect.");
+					}
+					catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					labelAffectation.setText("Le numéro de station et le nombre d'affectations doivent être renseignés.");
+				}
+			}
+		});
+		btnAffecter.setFont(new Font("Dialog", Font.PLAIN, 18));
+		btnAffecter.setBounds(489, 593, 115, 29);
+		contentPane.add(btnAffecter);
 	}
 }

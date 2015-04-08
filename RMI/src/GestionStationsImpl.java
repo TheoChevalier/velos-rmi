@@ -76,9 +76,12 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 
 	public int creerVelo(boolean maintenance) throws RemoteException {
 		try{
-			int numV;
+			int numV = 0;
 			Statement s = conn.createStatement();
-			numV = s.executeUpdate("SELECT COUNT(*) FROM VELOS");
+			ResultSet rs = s.executeQuery("SELECT COUNT(*) FROM VELOS");
+			if (rs.next()) {
+				numV = rs.getInt(1);
+			}
 			numV++;
 			s.executeUpdate("insert into VELOS values ('"+ numV +"', "+maintenance+", null, null)");
 			System.out.println("insert into VELOS values ('"+ numV +"', "+maintenance+", null, null)");
@@ -333,7 +336,7 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 				Velo v = rechercherVelo(numV);
 				if (v.getClient() == null) {
 					Statement s = conn.createStatement();
-					s.executeUpdate("update VELOS set maintenance=" + maintenance + " WHERE numV='" + numV + "'");
+					s.executeUpdate("update VELOS set maintenance=" + maintenance + ", client=NULL WHERE numV='" + numV + "'");
 					return true;
 				} else {
 					return false;
@@ -348,7 +351,6 @@ public class GestionStationsImpl extends UnicastRemoteObject implements GestionS
 	}
 
 	public static void main(String[] args) throws RemoteException, MalformedURLException {
-		System.out.println("coucou2");
 		LocateRegistry.createRegistry(1099);
 		GestionStationsImpl gest = new GestionStationsImpl("ServiceVelos");
 		Naming.rebind("Gestionnaire", gest);
