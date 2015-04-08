@@ -145,7 +145,7 @@ public class StationFrame extends JFrame {
 		btnAdministration.setBounds(10, 262, 199, 34);
 		contentPane.add(btnAdministration);
 		
-		final JButton btnQuitter = new JButton("Annuler");
+		final JButton btnQuitter = new JButton("Quitter");
 		btnQuitter.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

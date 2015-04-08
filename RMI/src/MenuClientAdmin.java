@@ -190,7 +190,7 @@ public class MenuClientAdmin extends JFrame {
 		btnModifier.setBounds(489, 329, 115, 29);
 		contentPane.add(btnModifier);
 		
-		JButton btnQuitter = new JButton("Quitter");
+		JButton btnQuitter = new JButton("Annuler");
 		btnQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				StationFrame sf;

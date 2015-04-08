@@ -193,7 +193,7 @@ public class EmprunterUnVeloFrame extends JFrame {
 		btnValider.setBounds(164, 177, 98, 35);
 		contentPane.add(btnValider);
 
-		btnNewButton = new JButton("Annuler");
+		btnNewButton = new JButton("Quitter");
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
